@@ -24,7 +24,6 @@ public class NeighbearsUserDetailsService implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
 
-
     @Autowired
     private final CustomerRepository customerRepository;
 
