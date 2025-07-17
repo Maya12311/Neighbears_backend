@@ -1,6 +1,5 @@
 package com.example.neighbears.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -13,12 +12,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile("!prod")
-public class EazyBankUsernamePwdAuthenticationProvider implements AuthenticationProvider {
+@Profile("prod")
+public class EazyBankProdUsernamePwdAuthenticationProvider implements AuthenticationProvider {
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
-    public EazyBankUsernamePwdAuthenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+    public EazyBankProdUsernamePwdAuthenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -28,8 +27,11 @@ public class EazyBankUsernamePwdAuthenticationProvider implements Authentication
         String username = authentication.getName();
         String pwd = authentication.getCredentials().toString();
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        return new UsernamePasswordAuthenticationToken(username, pwd, userDetails.getAuthorities());
-
+        if (passwordEncoder.matches(pwd, userDetails.getPassword())){
+            return new UsernamePasswordAuthenticationToken(username, pwd, userDetails.getAuthorities());
+        }else{
+            throw new BadCredentialsException("Invalid password!");
+        }
     }
 
     @Override
