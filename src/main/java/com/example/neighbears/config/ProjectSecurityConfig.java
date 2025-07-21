@@ -1,5 +1,7 @@
 package com.example.neighbears.config;
 
+import com.example.neighbears.exceptionhandling.CustomAccessDeniedHandler;
+import com.example.neighbears.exceptionhandling.CustomBasicAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -33,16 +35,16 @@ public class ProjectSecurityConfig {
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain (HttpSecurity http) throws Exception {
-        http
-                .cors(Customizer.withDefaults()) // <-- Das ist neu
-
+        http.requiresChannel(rcc -> rcc.anyRequest().requiresInsecure()) //only http
                 .csrf(csrfConfig -> csrfConfig.disable())
+                .cors(Customizer.withDefaults()) // <-- Das ist neu
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers( "/test", "/register", "/profile").permitAll()
-                        .anyRequest().authenticated())
-
+                        .requestMatchers( "/profile").authenticated()
+                .requestMatchers( "/test", "/register").permitAll())
                 .formLogin(Customizer.withDefaults());
-        http.httpBasic(Customizer.withDefaults());
+        http.httpBasic(hbc ->hbc.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint()));
+        http.exceptionHandling(ehc -> ehc.accessDeniedHandler(new CustomAccessDeniedHandler())); //später .accessDeniedPage("/denied") hinzufügen
+        //http.exceptionHandling(ehc -> ehc.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint()));  //its a global config
         return http.build();
     }
 

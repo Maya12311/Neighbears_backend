@@ -5,6 +5,7 @@ import com.example.neighbears.exceptions.EmailAlreadyUsedException;
 import com.example.neighbears.model.Customer;
 import com.example.neighbears.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -23,13 +24,13 @@ import java.util.Optional;
 public class NeighbearsUserDetailsService implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
     private final CustomerRepository customerRepository;
+    private final Environment environment;
 
-    public NeighbearsUserDetailsService(PasswordEncoder passwordEncoder, CustomerRepository customerRepository) {
+    public NeighbearsUserDetailsService(PasswordEncoder passwordEncoder, CustomerRepository customerRepository, Environment environment) {
         this.passwordEncoder = passwordEncoder;
         this.customerRepository = customerRepository;
+        this.environment = environment;
     }
 
 
@@ -39,7 +40,7 @@ public class NeighbearsUserDetailsService implements UserDetailsService {
 
         Optional<Customer> optional= customerRepository.findByEmail(username);
         Customer customer = optional.orElseThrow(() ->
-                new UsernameNotFoundException("Service.USER.NOT.FOUND" + username));
+                new UsernameNotFoundException("The user wasn't found: " + username));
         //Customer customer =customerRepository.findByEmail(username).orElseThrow(() ->
          //      new UsernameNotFoundException("User details not found for the user" + username));
         List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(customer.getRole()));
