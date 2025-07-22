@@ -45,7 +45,7 @@ public class ProjectSecurityConfig {
                 .requestMatchers( "/test", "/register", "/invalidSession").permitAll())
                 .formLogin(Customizer.withDefaults());
         http.httpBasic(hbc ->hbc.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint()));
-        http.exceptionHandling(ehc -> ehc.accessDeniedHandler(new CustomAccessDeniedHandler())); //später .accessDeniedPage("/denied") hinzufügen
+        http.exceptionHandling(ehc -> ehc.accessDeniedHandler(new CustomAccessDeniedHandler())); // .accessDeniedPage("/denied")
         //http.exceptionHandling(ehc -> ehc.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint()));  //its a global config
         return http.build();
     }
