@@ -24,7 +24,8 @@ public class ProjectSecurityProdConfig {
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain (HttpSecurity http) throws Exception {
-        http.redirectToHttps(https -> https.requestMatchers(AnyRequestMatcher.INSTANCE)) // for requiresChannel() because it is deprecated only https
+        http.sessionManagement(smc -> smc.invalidSessionUrl("/invalidSession"))
+                .redirectToHttps(https -> https.requestMatchers(AnyRequestMatcher.INSTANCE)) // for requiresChannel() because it is deprecated only https
                 .csrf(csrfConfig -> csrfConfig.disable())
 
                 .cors(Customizer.withDefaults()) // <-- Das ist neu
@@ -32,7 +33,7 @@ public class ProjectSecurityProdConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers( "/profile").authenticated()
 
-                        .requestMatchers( "/test", "/register").permitAll())
+                        .requestMatchers( "/test", "/register", "/invalidSession").permitAll())
 
                 .formLogin(Customizer.withDefaults());
         http.httpBasic(hbc ->hbc.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint()));

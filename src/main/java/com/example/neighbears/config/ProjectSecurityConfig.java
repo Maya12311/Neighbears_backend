@@ -35,12 +35,14 @@ public class ProjectSecurityConfig {
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain (HttpSecurity http) throws Exception {
-        http.requiresChannel(rcc -> rcc.anyRequest().requiresInsecure()) //only http
+        http.sessionManagement(smc -> smc.invalidSessionUrl("/invalidSession")) //invalidSession needs to be handled still
+
+                .requiresChannel(rcc -> rcc.anyRequest().requiresInsecure()) //only http
                 .csrf(csrfConfig -> csrfConfig.disable())
                 .cors(Customizer.withDefaults()) // <-- Das ist neu
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers( "/profile").authenticated()
-                .requestMatchers( "/test", "/register").permitAll())
+                .requestMatchers( "/test", "/register", "/invalidSession").permitAll())
                 .formLogin(Customizer.withDefaults());
         http.httpBasic(hbc ->hbc.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint()));
         http.exceptionHandling(ehc -> ehc.accessDeniedHandler(new CustomAccessDeniedHandler())); //später .accessDeniedPage("/denied") hinzufügen
