@@ -24,7 +24,10 @@ public class ProjectSecurityProdConfig {
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain (HttpSecurity http) throws Exception {
-        http.sessionManagement(smc -> smc.invalidSessionUrl("/invalidSession"))
+
+
+        http.sessionManagement(smc -> smc.invalidSessionUrl("/invalidSession").maximumSessions(1).maxSessionsPreventsLogin(true))
+
                 .redirectToHttps(https -> https.requestMatchers(AnyRequestMatcher.INSTANCE)) // for requiresChannel() because it is deprecated only https
                 .csrf(csrfConfig -> csrfConfig.disable())
 
