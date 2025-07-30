@@ -36,9 +36,10 @@ public class ProjectSecurityProdConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers( "/profile").authenticated()
 
-                        .requestMatchers( "/test", "/register", "/invalidSession").permitAll())
+                        .requestMatchers( "/test", "/register", "/invalidSession", "/login**").permitAll())
 
                 .formLogin(Customizer.withDefaults());
+                        //flc-> flc.loginPage("/login**").defaultSuccessUrl("/profile")); custom formLogin 64. not working with Angular
         http.httpBasic(hbc ->hbc.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint()));
      //   http.exceptionHandling(ehc -> ehc.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint()));  //its a global
         return http.build();

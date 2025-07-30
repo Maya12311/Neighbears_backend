@@ -44,8 +44,9 @@ public class ProjectSecurityConfig {
                 .cors(Customizer.withDefaults()) // <-- Das ist neu
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers( "/profile").authenticated()
-                .requestMatchers( "/test", "/register", "/invalidSession").permitAll())
+                .requestMatchers( "/test", "/register", "/invalidSession", "/login").permitAll())
                 .formLogin(Customizer.withDefaults());
+                        //flc -> flc.loginPage("/login").defaultSuccessUrl("/profile").failureUrl("login?error=true")); part of 64 Form Login but not with Angular
         http.httpBasic(hbc ->hbc.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint()));
         http.exceptionHandling(ehc -> ehc.accessDeniedHandler(new CustomAccessDeniedHandler())); // .accessDeniedPage("/denied")
         //http.exceptionHandling(ehc -> ehc.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint()));  //its a global config

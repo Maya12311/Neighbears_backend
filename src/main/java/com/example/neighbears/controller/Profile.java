@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class Profile {
 
     @GetMapping("/profile")
-    public String getMyProvile(){
+    public String getMyProfile(){
         return "this is my profile";
     }
 }
