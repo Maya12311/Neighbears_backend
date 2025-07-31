@@ -6,6 +6,7 @@ import com.example.neighbears.model.Customer;
 import com.example.neighbears.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -37,6 +38,7 @@ public class NeighbearsUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("try try tray"+ username.toString());
 
         Optional<Customer> optional= customerRepository.findByEmail(username);
         Customer customer = optional.orElseThrow(() ->
@@ -45,6 +47,17 @@ public class NeighbearsUserDetailsService implements UserDetailsService {
          //      new UsernameNotFoundException("User details not found for the user" + username));
         List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(customer.getRole()));
         return new User(customer.getEmail(), customer.getPwd(), authorities);
+    }
+
+    public UserDetails loadUserByAuthority(Authentication auth) throws UsernameNotFoundException {
+System.out.println("try maus tray"+ auth);
+        Optional<Customer> optional= customerRepository.findByEmail(auth.getName());
+        Customer cus = optional.orElseThrow(() ->
+                new UsernameNotFoundException("The user wasn't found: " + auth.getName()));
+        //Customer customer =customerRepository.findByEmail(username).orElseThrow(() ->
+        //      new UsernameNotFoundException("User details not found for the user" + username));
+        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(cus.getRole()));
+        return new User(cus.getEmail(), cus.getPwd(), authorities);
     }
 
     public Long registerUser(CustomerDTO customerDTO) {

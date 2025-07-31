@@ -6,8 +6,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class LoginController {
 
-    @GetMapping("/login")
+
+
+   // @GetMapping("/login")
     public String displayLoginPage() {
+        System.out.println("workiWorkiiiii");
         // String errorMessage = null;
         //if(null!= error){
         //errorMessage ="Username or Password is incorrect";

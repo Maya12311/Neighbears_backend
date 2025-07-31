@@ -1,21 +1,26 @@
 package com.example.neighbears.controller;
 
 import ch.qos.logback.core.CoreConstants;
+import com.example.neighbears.config.EazyBankUsernamePwdAuthenticationProvider;
 import com.example.neighbears.dto.CustomerDTO;
 import com.example.neighbears.model.Customer;
 import com.example.neighbears.repository.CustomerRepository;
 import com.example.neighbears.service.NeighbearsUserDetailsService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -27,12 +32,25 @@ public class UserController {
 private final CustomerRepository customerRepository;
 private final PasswordEncoder passwordEncoder;
 private final NeighbearsUserDetailsService userDetailsService;
+private final EazyBankUsernamePwdAuthenticationProvider eazyBankUsernamePwdAuthenticationProvider;
 
-    public UserController(CustomerRepository customerRepository, PasswordEncoder passwordEncoder, NeighbearsUserDetailsService userDetailsService) {
+    public UserController(CustomerRepository customerRepository, PasswordEncoder passwordEncoder, NeighbearsUserDetailsService userDetailsService, EazyBankUsernamePwdAuthenticationProvider eazyBankUsernamePwdAuthenticationProvider) {
         this.customerRepository = customerRepository;
         this.passwordEncoder = passwordEncoder;
         this.userDetailsService = userDetailsService;
+        this.eazyBankUsernamePwdAuthenticationProvider = eazyBankUsernamePwdAuthenticationProvider;
     }
+
+    @RequestMapping("/user")
+    public Customer getUserDetailsAfterLogin(Authentication authentication) {
+       Optional<Customer> optionalCustomer = customerRepository.findByEmail(authentication.getName());
+        System.out.println("Authorities: blu" );
+
+
+
+        return optionalCustomer.orElse(null);
+        }
+
 
     @PostMapping("/register")
     public ResponseEntity <Map<String, String>> registerUser(@RequestBody CustomerDTO customerDTO){

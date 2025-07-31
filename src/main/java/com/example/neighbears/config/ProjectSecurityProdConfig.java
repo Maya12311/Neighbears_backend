@@ -34,9 +34,9 @@ public class ProjectSecurityProdConfig {
                 .cors(Customizer.withDefaults()) // <-- Das ist neu
 
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers( "/profile").authenticated()
+                        .requestMatchers( "/profile", "/user").authenticated()
 
-                        .requestMatchers( "/test", "/register", "/invalidSession", "/login**").permitAll())
+                        .requestMatchers( "/test", "/register", "/invalidSession").permitAll())
 
                 .formLogin(Customizer.withDefaults());
                         //flc-> flc.loginPage("/login**").defaultSuccessUrl("/profile")); custom formLogin 64. not working with Angular
