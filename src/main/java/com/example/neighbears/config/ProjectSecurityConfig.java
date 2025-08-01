@@ -36,14 +36,14 @@ public class ProjectSecurityConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain (HttpSecurity http) throws Exception {
 
-        http.sessionManagement(smc -> smc.invalidSessionUrl("/invalidSession").maximumSessions(3).maxSessionsPreventsLogin(true)) //.expiredUrl()) -> in case spring is not enough //invalidSession needs to be handled still
-
+        http.sessionManagement(smc -> smc.maximumSessions(3).maxSessionsPreventsLogin(true)) //.expiredUrl()) -> in case spring is not enough //invalidSession needs to be handled still
+//invalidSessionUrl("/test") genau vor maximumSession wenn man zu einer bestimmten url gehen möchte für den fehler
 
                 .csrf(csrfConfig -> csrfConfig.disable())
                 .cors(Customizer.withDefaults()) // <-- Das ist neu
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers( "/profile", "/user").authenticated()
-                .requestMatchers( "/test", "/register", "/invalidSession").permitAll())
+                .requestMatchers( "/error", "/login","/test", "/register", "/invalidSession").permitAll())
                 .formLogin(Customizer.withDefaults());
                         //flc -> flc.loginPage("/login").defaultSuccessUrl("/profile").failureUrl("login?error=true")); part of 64 Form Login but not with Angular
         http.httpBasic(hbc ->hbc.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint()));

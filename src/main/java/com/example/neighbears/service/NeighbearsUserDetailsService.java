@@ -49,15 +49,14 @@ public class NeighbearsUserDetailsService implements UserDetailsService {
         return new User(customer.getEmail(), customer.getPwd(), authorities);
     }
 
-    public UserDetails loadUserByAuthority(Authentication auth) throws UsernameNotFoundException {
-System.out.println("try maus tray"+ auth);
-        Optional<Customer> optional= customerRepository.findByEmail(auth.getName());
-        Customer cus = optional.orElseThrow(() ->
-                new UsernameNotFoundException("The user wasn't found: " + auth.getName()));
-        //Customer customer =customerRepository.findByEmail(username).orElseThrow(() ->
-        //      new UsernameNotFoundException("User details not found for the user" + username));
-        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(cus.getRole()));
-        return new User(cus.getEmail(), cus.getPwd(), authorities);
+
+    public CustomerDTO getUserByEmail(String email) {
+        Optional<Customer> optional = customerRepository.findByEmail(email);
+        Customer customer = optional.orElse(null);
+        CustomerDTO customerDTO = new CustomerDTO
+                (customer.getId(),customer.getName(), customer.getEmail(), customer.getMobileNumber(),  customer.getPwd(), customer.getRole());
+
+        return customerDTO;
     }
 
     public Long registerUser(CustomerDTO customerDTO) {

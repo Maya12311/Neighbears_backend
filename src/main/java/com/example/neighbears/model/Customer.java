@@ -12,7 +12,9 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    private String name;
     private String email;
+    private long mobileNumber;
     private String pwd;
     private String role;
 
@@ -20,11 +22,13 @@ public class Customer {
         super();
     }
 
-    public Customer(long id, String email, String pwd, String role) {
+    public Customer(long id, String name, String email,long mobileNumber, String pwd, String role) {
         this.id = id;
         this.email = email;
         this.pwd = pwd;
         this.role = role;
+        this.name = name;
+        this.mobileNumber = mobileNumber;
     }
 
     public long getId() {
@@ -51,6 +55,22 @@ public class Customer {
 
     public String getRole() {
         return role;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public long getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(int mobileNumber) {
+        this.mobileNumber = mobileNumber;
     }
 
     public void setRole(String role) {

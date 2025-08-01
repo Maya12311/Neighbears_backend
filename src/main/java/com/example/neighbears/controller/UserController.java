@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins= "*")
 public class UserController {
 
 
@@ -41,20 +42,14 @@ private final EazyBankUsernamePwdAuthenticationProvider eazyBankUsernamePwdAuthe
         this.eazyBankUsernamePwdAuthenticationProvider = eazyBankUsernamePwdAuthenticationProvider;
     }
 
-    @RequestMapping("/user")
-    public Customer getUserDetailsAfterLogin(Authentication authentication) {
-       Optional<Customer> optionalCustomer = customerRepository.findByEmail(authentication.getName());
-        System.out.println("Authorities: blu" );
 
-
-
-        return optionalCustomer.orElse(null);
-        }
 
 
     @PostMapping("/register")
     public ResponseEntity <Map<String, String>> registerUser(@RequestBody CustomerDTO customerDTO){
         try{
+            System.out.println("seeeeeeee");
+
             System.out.println(customerDTO);
         Long customerId = userDetailsService.registerUser(customerDTO);
             if(customerId > 0) {
@@ -75,5 +70,14 @@ private final EazyBankUsernamePwdAuthenticationProvider eazyBankUsernamePwdAuthe
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
 
         }
+    }
+
+   @RequestMapping("/user")
+    public CustomerDTO getUserDetailsAfterLogin(Authentication authentication) {
+        CustomerDTO customerDTO = userDetailsService.getUserByEmail(authentication.getName());
+
+
+
+        return customerDTO;
     }
 }
