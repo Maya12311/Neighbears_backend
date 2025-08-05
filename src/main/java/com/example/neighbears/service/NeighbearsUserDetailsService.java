@@ -61,16 +61,24 @@ public class NeighbearsUserDetailsService implements UserDetailsService {
         return customerDTO;
     }
 
-    public Long registerUser(CustomerDTO customerDTO) {
+    public Long registerUser(CustomerDTO customerDTO) throws EmailAlreadyUsedException {
+
+        System.out.println("in register class");
         Optional<Customer> existingCustomer = customerRepository.findByEmail(customerDTO.getEmail());
+        System.out.println("not sure about the prob");
 
         if(existingCustomer.isPresent()){
     throw new EmailAlreadyUsedException("Diese Email ist bereits vergeben");
         }else {
 
+            System.out.println("is it rolling");
+
             Customer customer = new Customer();
+            customer.setName(customerDTO.getName());
             customer.setEmail(customerDTO.getEmail());
+            customer.setMobileNumber(customerDTO.getMobileNumber());
             customer.setRole(customerDTO.getRole());
+
 
             String hashPwd = passwordEncoder.encode(customerDTO.getPwd());
             customer.setPwd(hashPwd);
