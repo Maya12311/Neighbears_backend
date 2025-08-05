@@ -21,6 +21,9 @@ public class CustomerDTO {
 
     private SelfDescriptionDTO selfDescriptionDTO;
 
+    public CustomerDTO() {
+    }
+
     public CustomerDTO(long id, String name, String email, long mobileNumber, String pwd, String role) {
         this.id = id;
         this.name = name;
@@ -70,7 +73,7 @@ public class CustomerDTO {
         return mobileNumber;
     }
 
-    public void setMobileNumber(int mobileNumber) {
+    public void setMobileNumber(long mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
 

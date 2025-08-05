@@ -69,6 +69,7 @@ public class ProjectSecurityConfig {
 
              //   .csrf(csrfConfig -> csrfConfig.disable())
                         .csrf(csrfConfig -> csrfConfig.csrfTokenRequestHandler(csrfTokenRequestAttributeHandler)
+                                .ignoringRequestMatchers("/register")     //here are the endpoints which gets ignored concerning csrf
                                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                         .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                         .requiresChannel(rcc -> rcc.anyRequest().requiresInsecure()) //only http

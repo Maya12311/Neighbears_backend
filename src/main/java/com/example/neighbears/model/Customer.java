@@ -13,7 +13,7 @@ public class Customer {
     private String name;
     private String email;
     @Column(name = "mobile_number")
-    private long mobileNumber;
+    private Long mobileNumber;
     private String pwd;
     private String role;
 
@@ -26,7 +26,7 @@ public class Customer {
 
 
 
-    public Customer(long id, String name, String email,long mobileNumber, String pwd, String role) {
+    public Customer(long id, String name, String email,Long mobileNumber, String pwd, String role) {
         this.id = id;
         this.email = email;
         this.pwd = pwd;
@@ -77,11 +77,11 @@ public class Customer {
         this.name = name;
     }
 
-    public long getMobileNumber() {
+    public Long getMobileNumber() {
         return mobileNumber;
     }
 
-    public void setMobileNumber(int mobileNumber) {
+    public void setMobileNumber(Long mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
 
