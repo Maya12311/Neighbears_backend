@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins= "*")
+//@CrossOrigin(origins= "*")
 public class UserController {
 
 

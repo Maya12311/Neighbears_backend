@@ -1,4 +1,7 @@
 package com.example.neighbears.dto;
+import com.example.neighbears.model.SelfDescription;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
@@ -11,9 +14,12 @@ public class CustomerDTO {
     private String email;
     private long mobileNumber;
     @NotBlank
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String pwd;
     @NotBlank
     private String role;
+
+    private SelfDescriptionDTO selfDescriptionDTO;
 
     public CustomerDTO(long id, String name, String email, long mobileNumber, String pwd, String role) {
         this.id = id;
@@ -23,6 +29,18 @@ public class CustomerDTO {
         this.pwd = pwd;
         this.role = role;
     }
+
+    public CustomerDTO(long id, String name, String email, long mobileNumber, String pwd, String role, SelfDescriptionDTO selfDescriptionDTO) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.mobileNumber = mobileNumber;
+        this.pwd = pwd;
+        this.role = role;
+        this.selfDescriptionDTO = selfDescriptionDTO;
+    }
+
+
 
     public long getId() {
         return id;
@@ -72,5 +90,15 @@ public class CustomerDTO {
         this.role = role;
     }
 
-
+    @Override
+    public String toString() {
+        return "CustomerDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", mobileNumber=" + mobileNumber +
+                ", pwd='" + pwd + '\'' +
+                ", role='" + role + '\'' +
+                '}';
+    }
 }

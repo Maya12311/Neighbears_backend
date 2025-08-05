@@ -50,9 +50,11 @@ public class NeighbearsUserDetailsService implements UserDetailsService {
     }
 
 
-    public CustomerDTO getUserByEmail(String email) {
+    public CustomerDTO getUserByEmail(String email) throws UsernameNotFoundException
+    {
+        System.out.println("was ist das funcking problem");
         Optional<Customer> optional = customerRepository.findByEmail(email);
-        Customer customer = optional.orElse(null);
+        Customer customer = optional.orElseThrow(()->  new UsernameNotFoundException("user not found"));
         CustomerDTO customerDTO = new CustomerDTO
                 (customer.getId(),customer.getName(), customer.getEmail(), customer.getMobileNumber(),  customer.getPwd(), customer.getRole());
 

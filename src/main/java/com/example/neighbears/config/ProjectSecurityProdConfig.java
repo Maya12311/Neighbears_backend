@@ -1,6 +1,7 @@
 package com.example.neighbears.config;
 
 import com.example.neighbears.exceptionhandling.CustomBasicAuthenticationEntryPoint;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -16,6 +17,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Collections;
 import java.util.List;
 
 @Configuration
@@ -24,6 +26,23 @@ public class ProjectSecurityProdConfig {
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain (HttpSecurity http) throws Exception {
+ http.cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
+            @Override
+            public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+
+                CorsConfiguration config = new CorsConfiguration();
+                config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
+                config.setAllowedMethods(Collections.singletonList("*"));
+
+                config.setAllowedHeaders(List.of("*"));
+                config.setAllowCredentials(true);
+                config.setMaxAge(3600L);
+
+                return config;
+            }
+
+
+        })); // <-- Das ist neu
 
 
         http.sessionManagement(smc -> smc.invalidSessionUrl("/invalidSession").maximumSessions(1).maxSessionsPreventsLogin(true))

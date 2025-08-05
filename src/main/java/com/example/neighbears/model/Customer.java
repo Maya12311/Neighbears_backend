@@ -1,9 +1,7 @@
 package com.example.neighbears.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
@@ -14,13 +12,19 @@ public class Customer {
     private long id;
     private String name;
     private String email;
+    @Column(name = "mobile_number")
     private long mobileNumber;
     private String pwd;
     private String role;
 
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    private SelfDescription description;
+
     public Customer() {
         super();
     }
+
+
 
     public Customer(long id, String name, String email,long mobileNumber, String pwd, String role) {
         this.id = id;
@@ -29,6 +33,14 @@ public class Customer {
         this.role = role;
         this.name = name;
         this.mobileNumber = mobileNumber;
+    }
+
+    public SelfDescription getDescription() {
+        return description;
+    }
+
+    public void setDescription(SelfDescription description) {
+        this.description = description;
     }
 
     public long getId() {
