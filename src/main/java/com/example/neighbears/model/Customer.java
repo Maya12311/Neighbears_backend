@@ -1,9 +1,11 @@
 package com.example.neighbears.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Customer {
@@ -20,13 +22,19 @@ public class Customer {
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
     private SelfDescription description;
 
+    @OneToMany(mappedBy = "customer", fetch= FetchType.EAGER)
+    @JsonIgnore //if UI is giving error message
+    private Set<Authority> authorities;
+
     public Customer() {
         super();
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
 
-
-    public Customer(long id, String name, String email,Long mobileNumber, String pwd, String role) {
+    public Customer(long id, String name, String email, Long mobileNumber, String pwd, String role) {
         this.id = id;
         this.email = email;
         this.pwd = pwd;
@@ -41,6 +49,14 @@ public class Customer {
 
     public void setDescription(SelfDescription description) {
         this.description = description;
+    }
+
+    public Set<Authority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
     }
 
     public long getId() {

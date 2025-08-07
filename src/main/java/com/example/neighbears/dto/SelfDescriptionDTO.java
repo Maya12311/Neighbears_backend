@@ -30,6 +30,8 @@ public class SelfDescriptionDTO {
         this.updatedAt = updatedAt;
     }
 
+
+
     public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }

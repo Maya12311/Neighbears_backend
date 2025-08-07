@@ -75,6 +75,8 @@ public class ProjectSecurityConfig {
                         .requiresChannel(rcc -> rcc.anyRequest().requiresInsecure()) //only http
 
                         .authorizeHttpRequests((requests) -> requests
+                              //  .requestMatchers("/test").hasAuthority("VIEWACCOUNT") //its for a single action or allowance
+                                .requestMatchers("/test").hasRole("USER") //hasRole is for a wider range of authorizitions
                         .requestMatchers( "/profile", "/user").authenticated()
                 .requestMatchers( "/error", "/login","/test", "/register", "/invalidSession").permitAll())
                 .formLogin(Customizer.withDefaults());

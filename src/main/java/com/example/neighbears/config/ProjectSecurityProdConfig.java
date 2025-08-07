@@ -39,7 +39,7 @@ public class ProjectSecurityProdConfig {
             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
 
                 CorsConfiguration config = new CorsConfiguration();
-                config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
+                config.setAllowedOrigins(Collections.singletonList("https://localhost:4200"));
                 config.setAllowedMethods(Collections.singletonList("*"));
 
                 config.setAllowedHeaders(List.of("*"));
@@ -61,7 +61,7 @@ public class ProjectSecurityProdConfig {
 
                 http.redirectToHttps(https ->
                                 https.requestMatchers(AnyRequestMatcher.INSTANCE)) // for requiresChannel() because it is deprecated only https
-                .csrf(csrfConfig -> csrfConfig.disable())
+                .csrf( csrfConfig -> csrfConfig.disable())
 
                 .cors(Customizer.withDefaults()) // <-- Das ist neu
 

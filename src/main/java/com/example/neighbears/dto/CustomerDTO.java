@@ -1,9 +1,11 @@
 package com.example.neighbears.dto;
+import com.example.neighbears.model.Authority;
 import com.example.neighbears.model.SelfDescription;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.util.Set;
 
 public class CustomerDTO {
 
@@ -20,6 +22,9 @@ public class CustomerDTO {
     private String role;
 
     private SelfDescriptionDTO selfDescriptionDTO;
+
+    private Set<Authority> authorities;
+
 
     public CustomerDTO() {
     }
@@ -44,6 +49,21 @@ public class CustomerDTO {
     }
 
 
+    public Set<Authority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
+    }
+
+    public SelfDescriptionDTO getSelfDescriptionDTO() {
+        return selfDescriptionDTO;
+    }
+
+    public void setSelfDescriptionDTO(SelfDescriptionDTO selfDescriptionDTO) {
+        this.selfDescriptionDTO = selfDescriptionDTO;
+    }
 
     public long getId() {
         return id;
