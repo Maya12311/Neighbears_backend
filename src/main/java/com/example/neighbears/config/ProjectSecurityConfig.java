@@ -3,10 +3,12 @@ package com.example.neighbears.config;
 import com.example.neighbears.exceptionhandling.CustomAccessDeniedHandler;
 import com.example.neighbears.exceptionhandling.CustomBasicAuthenticationEntryPoint;
 import com.example.neighbears.filter.CsrfCookieFilter;
+import com.example.neighbears.filter.RequestValidationBeforeFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.password.CompromisedPasswordChecker;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -37,7 +39,6 @@ import java.util.List;
 
 import javax.sql.DataSource;
 import java.util.List;
-
 @Configuration
 @Profile("!prod")
 public class ProjectSecurityConfig {
@@ -72,12 +73,15 @@ public class ProjectSecurityConfig {
                                 .ignoringRequestMatchers("/register")     //here are the endpoints which gets ignored concerning csrf
                                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                         .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+                        .addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
                         .requiresChannel(rcc -> rcc.anyRequest().requiresInsecure()) //only http
 
                         .authorizeHttpRequests((requests) -> requests
                               //  .requestMatchers("/test").hasAuthority("VIEWACCOUNT") //its for a single action or allowance
                                 .requestMatchers("/test").hasRole("USER") //hasRole is for a wider range of authorizitions
-                        .requestMatchers( "/profile", "/user").authenticated()
+                                .requestMatchers(HttpMethod.PUT, "/profile").authenticated()
+
+                                .requestMatchers( "/profile", "/user").authenticated()
                 .requestMatchers( "/error", "/login","/test", "/register", "/invalidSession").permitAll())
                 .formLogin(Customizer.withDefaults());
                         //flc -> flc.loginPage("/login").defaultSuccessUrl("/profile").failureUrl("login?error=true")); part of 64 Form Login but not with Angular

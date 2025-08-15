@@ -48,9 +48,7 @@ private final EazyBankUsernamePwdAuthenticationProvider eazyBankUsernamePwdAuthe
     @PostMapping("/register")
     public ResponseEntity <Map<String, String>> registerUser(@RequestBody CustomerDTO customerDTO){
         try{
-            System.out.println("seeeeeeee");
 
-            System.out.println(customerDTO);
         Long customerId = userDetailsService.registerUser(customerDTO);
             if(customerId > 0) {
                 String successMessage = environment.getProperty("API.INSERT_SUCCESS") + customerId;
@@ -72,12 +70,11 @@ private final EazyBankUsernamePwdAuthenticationProvider eazyBankUsernamePwdAuthe
         }
     }
 
+
+
    @RequestMapping("/user")
     public CustomerDTO getUserDetailsAfterLogin(Authentication authentication) {
         CustomerDTO customerDTO = userDetailsService.getUserByEmail(authentication.getName());
-
-
-
         return customerDTO;
     }
 }

@@ -49,6 +49,7 @@ public class CustomerDTO {
     }
 
 
+
     public Set<Authority> getAuthorities() {
         return authorities;
     }

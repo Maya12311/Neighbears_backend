@@ -2,6 +2,7 @@ package com.example.neighbears.service;
 
 import com.example.neighbears.dto.CustomerDTO;
 import com.example.neighbears.dto.SelfDescriptionDTO;
+import com.example.neighbears.exceptions.SelfDescriptionNotFoundException;
 import com.example.neighbears.exceptions.UserIdNotFoundException;
 import com.example.neighbears.model.Customer;
 import com.example.neighbears.model.SelfDescription;
@@ -25,39 +26,51 @@ public class UserProfileService {
         this.customerRepository = customerRepository;
     }
 
+    public SelfDescriptionDTO getDescription(String email) throws SelfDescriptionNotFoundException{
+        Optional<Customer> opt= customerRepository.findByEmail(email);
+        Customer customer = opt.orElseThrow(() -> new UserIdNotFoundException("User not found"));
+
+
+        Optional<SelfDescription> optional = profileRepository.findByCustomerId(customer.getId());
+        SelfDescription selfDescription = optional.orElseThrow(() -> new SelfDescriptionNotFoundException("Not Found"));
+
+        SelfDescriptionDTO selfDescriptionDTO =
+                new SelfDescriptionDTO(selfDescription.getCustomerId(),
+                        selfDescription.getTitle(),
+                        selfDescription.getMessage(),
+                        selfDescription.getCreatedAt(),
+                        selfDescription.getUpdatedAt());
+        return selfDescriptionDTO;
+    }
+
     public SelfDescriptionDTO saveDescription(SelfDescriptionDTO selfDescriptionDTO, Authentication authentication) throws UserIdNotFoundException {
-        System.out.println("im in the testiiii");
-        System.out.println("Miau.  "+selfDescriptionDTO.getMessage());
+
 
         //System.out.println("is the authentication there? "+authentication);
        // CustomerDTO customerDTO = userDetailsService.getUserByEmail(authentication.getName());
        // selfDescriptionDTO.setCustomer(customerDTO);
         Optional<Customer> optional = customerRepository.findByEmail(authentication.getName());
-        Customer customer = optional.orElseThrow(() -> new UserIdNotFoundException("not found"));
-
-        System.out.println("BLU" + customer.getId());
+        Customer customer = optional.orElseThrow(() -> new UserIdNotFoundException("User not found"));
 
 
         // System.out.println("now the customerDTO? "+customerDTO.getId()+ "actually now"+ customerDTO);
-SelfDescription selfDescription = new SelfDescription(
-        selfDescriptionDTO.getCustomerId(), selfDescriptionDTO.getTitle(),
-        selfDescriptionDTO.getMessage(), selfDescriptionDTO.getCreatedAt(),
-        selfDescriptionDTO.getUpdatedAt()
-);
+SelfDescription selfDescriptionEntity = profileRepository.findByCustomerId(customer.getId())
+                .orElseGet(() -> {
+                    SelfDescription newSelfDescription = new SelfDescription();
+                    newSelfDescription.setCustomer(customer);
+                    return newSelfDescription;
+                });
 
-selfDescription.setCustomer(customer);
-        System.out.println("BLU again" + selfDescription);
+selfDescriptionEntity.setTitle(selfDescriptionDTO.getTitle());
+selfDescriptionEntity.setMessage(selfDescriptionDTO.getMessage());
 
 
-if (selfDescription == null) {
+
+
+if (selfDescriptionEntity == null) {
     throw new IllegalArgumentException("The description is empty");
 }
-        System.out.println("BLU again" + selfDescription.getCustomer().getName());
-        System.out.println("BLU again" + selfDescription.getCustomer().getId());
-        System.out.println("BLU again" + selfDescription.getCustomer().getEmail());
-
-
-        SelfDescription selfDesc = profileRepository.save(selfDescription);
+SelfDescription selfDesc = profileRepository.save(selfDescriptionEntity);
 
 
         SelfDescriptionDTO selfdto = new SelfDescriptionDTO(
@@ -68,7 +81,6 @@ if (selfDescription == null) {
                 selfDesc.getUpdatedAt()
         );
 
-System.out.println("what ist it bluuuu.  "+selfdto);
         return selfdto;
     }
 }
