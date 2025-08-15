@@ -11,7 +11,8 @@ public class Test {
 
     @GetMapping("/test")
     public String getMyTest( Authentication authentication){
-       // System.out.println("show iiid"+id);
+//        System.out.println("show iiid"+id);
+
         Authentication auth = authentication;
         System.out.println("BLU"+authentication.getAuthorities());
 

@@ -1,6 +1,8 @@
 package com.example.neighbears.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -17,15 +19,17 @@ public class SelfDescription {
     private String title;
     private String message;
 
+    @CreationTimestamp
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @UpdateTimestamp
     @Column(name="updated_at")
     private LocalDateTime updatedAt;
 
     @OneToOne
     @MapsId
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_id", unique = true)
     private Customer customer;
 
     public SelfDescription(Long customerId, String title, String message, LocalDateTime createdAt, LocalDateTime updatedAt, Customer customer) {

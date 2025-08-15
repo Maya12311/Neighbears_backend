@@ -8,5 +8,4 @@ import java.util.Optional;
 
 public interface ProfileRepository extends CrudRepository<SelfDescription, Long> {
 Optional<SelfDescription> findByCustomerId(Long customerId);
-
 }
