@@ -38,7 +38,6 @@ public class NeighbearsUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("try try tray"+ username.toString());
 
         Optional<Customer> optional= customerRepository.findByEmail(username);
         Customer customer = optional.orElseThrow(() ->
