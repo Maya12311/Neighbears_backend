@@ -3,13 +3,13 @@ package com.example.neighbears.dto;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
 
-public class Image {
+public class ImageDTO {
     @NotNull
     private String filename;
     @NotNull
     private String contentType;
     @NotNull
-    private String sizeBytes;
+    private Long sizeBytes;
     private Integer widthPx;
     private Integer heighPx;
     @NotNull
@@ -19,10 +19,10 @@ public class Image {
     @NotNull
     private Instant uploadedAt;
 
-    public Image() {
+    public ImageDTO() {
     }
 
-    public Image(String filename, String contentType, String sizeBytes, Integer widthPx, Integer heighPx, String sha256Hex, String storageKey, Instant uploadedAt) {
+    public ImageDTO(String filename, String contentType, Long sizeBytes, Integer widthPx, Integer heighPx, String sha256Hex, String storageKey, Instant uploadedAt) {
         this.filename = filename;
         this.contentType = contentType;
         this.sizeBytes = sizeBytes;
@@ -49,11 +49,11 @@ public class Image {
         this.contentType = contentType;
     }
 
-    public String getSizeBytes() {
+    public Long getSizeBytes() {
         return sizeBytes;
     }
 
-    public void setSizeBytes(String sizeBytes) {
+    public void setSizeBytes(Long sizeBytes) {
         this.sizeBytes = sizeBytes;
     }
 
