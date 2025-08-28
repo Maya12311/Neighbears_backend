@@ -30,18 +30,19 @@ public class ImageService {
     private final ImageRepository imageRepository;
     private final String uploadDir;
 
+
     public ImageService(@Value("${app.local.base-dir}") String uploadDir, CustomerRepository customerRepository, ImageRepository imageRepository) {
         this.customerRepository = customerRepository;
         this.imageRepository = imageRepository;
         this.uploadDir = uploadDir;
     }
 
-        public ImageDTO saveImage(Long customerId, MultipartFile file) throws Exception{
+        public ImageDTO saveImage(String name, MultipartFile file) throws Exception{
 
-            Optional<Customer> optional = customerRepository.findById(customerId);
-            Customer customer = optional.orElseThrow(()-> new UsernameNotFoundException("The user wasn't found: " + customerId));
+            Optional<Customer> optional = customerRepository.findByEmail(name);
+            Customer customer = optional.orElseThrow(()-> new UsernameNotFoundException("The user wasn't found: " + name));
 
-            String storageKey = customerId + "_" + System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            String storageKey = customer.getId() + "_" + System.currentTimeMillis() + "_" + file.getOriginalFilename();
             String filePath = uploadDir + "/" + storageKey;
 
             Files.write(Paths.get(filePath), file.getBytes());
