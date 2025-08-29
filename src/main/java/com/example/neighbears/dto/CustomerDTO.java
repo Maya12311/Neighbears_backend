@@ -1,5 +1,6 @@
 package com.example.neighbears.dto;
 import com.example.neighbears.model.Authority;
+import com.example.neighbears.model.Image;
 import com.example.neighbears.model.SelfDescription;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -25,6 +26,7 @@ public class CustomerDTO {
 
     private Set<Authority> authorities;
 
+    private Image avatar;
 
     public CustomerDTO() {
     }
@@ -38,7 +40,7 @@ public class CustomerDTO {
         this.role = role;
     }
 
-    public CustomerDTO(long id, String name, String email, long mobileNumber, String pwd, String role, SelfDescriptionDTO selfDescriptionDTO) {
+    public CustomerDTO(long id, String name, String email, long mobileNumber, String pwd, String role, SelfDescriptionDTO selfDescriptionDTO, Set<Authority> authorities) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -46,9 +48,28 @@ public class CustomerDTO {
         this.pwd = pwd;
         this.role = role;
         this.selfDescriptionDTO = selfDescriptionDTO;
+        this.authorities = authorities;
     }
 
+    public CustomerDTO(long id, String name, String email, long mobileNumber, String pwd, String role, SelfDescriptionDTO selfDescriptionDTO, Set<Authority> authorities, Image avatar) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.mobileNumber = mobileNumber;
+        this.pwd = pwd;
+        this.role = role;
+        this.selfDescriptionDTO = selfDescriptionDTO;
+        this.authorities = authorities;
+        this.avatar = avatar;
+    }
 
+    public Image getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Image avatar) {
+        this.avatar = avatar;
+    }
 
     public Set<Authority> getAuthorities() {
         return authorities;
