@@ -40,7 +40,8 @@ public class ImageController {
         CustomerDTO customerDTO = neighbearsUserDetailsService.getUserByEmail(email);
         byte[] image = imageService.getCurrentUserImage(customerDTO.getId());
         String type = imageService.getCustomerImageType(customerDTO.getId());
-
+log.info("what ist "+image);
+log.info("need " + type);
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(type))
                 .body(image);

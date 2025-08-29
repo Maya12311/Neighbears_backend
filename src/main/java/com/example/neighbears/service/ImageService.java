@@ -35,7 +35,7 @@ public class ImageService {
     private final NeighbearsUserDetailsService userDetailsService;
 
 
-    public ImageService(CustomerRepository customerRepository, ImageRepository imageRepository, String uploadDir, NeighbearsUserDetailsService userDetailsService) {
+    public ImageService(CustomerRepository customerRepository, ImageRepository imageRepository,@Value("${app.local.base-dir}") String uploadDir, NeighbearsUserDetailsService userDetailsService) {
         this.customerRepository = customerRepository;
         this.imageRepository = imageRepository;
         this.uploadDir = uploadDir;
@@ -100,7 +100,6 @@ public class ImageService {
     imageDTO.setUploadedAt(image.getUploadedAt());
     imageDTO.setContentType(image.getContentType());
     imageDTO.setSha256Hex(image.getSha256Hex());
-
     return imageDTO;
     }
 
@@ -109,13 +108,16 @@ public class ImageService {
 Optional<Image> optional = imageRepository.findFirstByCustomerIdOrderByUploadedAtDesc(id);
 Image image = optional.orElseThrow(() -> new RuntimeException("Profile Image not found"));
 
-Path path = Paths.get(uploadDir+  image.getStorageKey());
+Path path = Paths.get(uploadDir+ "/"+ image.getStorageKey());
+        System.out.println("am i in here???");
+
 return Files.readAllBytes(path);
     }
 
     public String getCustomerImageType(Long customerId)  {
         Optional<Image> optional = imageRepository.findFirstByCustomerIdOrderByUploadedAtDesc(customerId);
         Image image = optional.orElseThrow(() -> new RuntimeException("Profile Image not found"));
+        System.out.println("am i in here???");
 
         return image.getContentType();
     }
