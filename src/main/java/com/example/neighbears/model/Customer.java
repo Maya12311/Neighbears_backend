@@ -26,6 +26,9 @@ public class Customer {
     @JsonIgnore //if UI is giving error message
     private Set<Authority> authorities;
 
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Image avatar;
+
     public Customer() {
         super();
     }
@@ -34,13 +37,35 @@ public class Customer {
         this.id = id;
     }
 
-    public Customer(long id, String name, String email, Long mobileNumber, String pwd, String role) {
+    public Customer(long id, String name, String email, Long mobileNumber, String pwd, String role, SelfDescription description, Set<Authority> authorities, Image avatar) {
         this.id = id;
+        this.name = name;
         this.email = email;
+        this.mobileNumber = mobileNumber;
         this.pwd = pwd;
         this.role = role;
+        this.description = description;
+        this.authorities = authorities;
+        this.avatar = avatar;
+    }
+
+    public Customer(long id, String name, String email, Long mobileNumber, String pwd, String role, SelfDescription description, Set<Authority> authorities) {
+        this.id = id;
         this.name = name;
+        this.email = email;
         this.mobileNumber = mobileNumber;
+        this.pwd = pwd;
+        this.role = role;
+        this.description = description;
+        this.authorities = authorities;
+    }
+
+    public Image getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Image avatar) {
+        this.avatar = avatar;
     }
 
     public SelfDescription getDescription() {

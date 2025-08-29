@@ -74,6 +74,7 @@ private final EazyBankUsernamePwdAuthenticationProvider eazyBankUsernamePwdAuthe
 
    @RequestMapping("/user")
     public CustomerDTO getUserDetailsAfterLogin(Authentication authentication) {
+        System.out.println("heeey");
         CustomerDTO customerDTO = userDetailsService.getUserByEmail(authentication.getName());
         return customerDTO;
     }

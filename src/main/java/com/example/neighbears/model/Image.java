@@ -10,18 +10,28 @@ import java.time.Instant;
 public class Image {
 
     @Id
+    @Column(name="customer_id")
+    private Long customerId;
+
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @MapsId
     @JoinColumn(name="customer_id")
     private Customer customer;
 
     private String filename;
+    @Column(name="content_type")
     private String contentType;
+    @Column(name="size_bytes")
     private Long sizeBytes;
+    @Column(name="width_px")
     private Integer widthPx;
+    @Column(name="height_px")
     private Integer heightPx;
+    @Column(name="sha256_hex")
     private String sha256Hex;
+    @Column(name="storage_key")
     private String storageKey;
+    @Column(name="uploaded_at")
     private Instant uploadedAt;
 
     public Image() {
