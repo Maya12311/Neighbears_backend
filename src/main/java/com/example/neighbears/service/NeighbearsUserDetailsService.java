@@ -63,15 +63,14 @@ public class NeighbearsUserDetailsService implements UserDetailsService {
 
     public Long registerUser(CustomerDTO customerDTO) throws EmailAlreadyUsedException {
 
-        System.out.println("in register class");
+
         Optional<Customer> existingCustomer = customerRepository.findByEmail(customerDTO.getEmail());
-        System.out.println("not sure about the prob");
+
 
         if(existingCustomer.isPresent()){
     throw new EmailAlreadyUsedException("Diese Email ist bereits vergeben");
         }else {
 
-            System.out.println("is it rolling");
 
             Customer customer = new Customer();
             customer.setName(customerDTO.getName());
