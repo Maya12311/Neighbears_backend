@@ -1,5 +1,6 @@
 package com.example.neighbears.service;
 
+import com.example.neighbears.dto.CustomerDTO;
 import com.example.neighbears.dto.ImageDTO;
 import com.example.neighbears.model.Customer;
 import com.example.neighbears.model.Image;
@@ -16,7 +17,9 @@ import com.example.neighbears.service.UserProfileService;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.time.Instant;
@@ -29,15 +32,17 @@ public class ImageService {
     private final CustomerRepository customerRepository;
     private final ImageRepository imageRepository;
     private final String uploadDir;
+    private final NeighbearsUserDetailsService userDetailsService;
 
 
-    public ImageService(@Value("${app.local.base-dir}") String uploadDir, CustomerRepository customerRepository, ImageRepository imageRepository) {
+    public ImageService(CustomerRepository customerRepository, ImageRepository imageRepository,@Value("${app.local.base-dir}") String uploadDir, NeighbearsUserDetailsService userDetailsService) {
         this.customerRepository = customerRepository;
         this.imageRepository = imageRepository;
         this.uploadDir = uploadDir;
+        this.userDetailsService = userDetailsService;
     }
 
-        public ImageDTO saveImage(String name, MultipartFile file) throws Exception{
+    public ImageDTO saveImage(String name, MultipartFile file) throws Exception{
 
             Optional<Customer> optional = customerRepository.findByEmail(name);
             Customer customer = optional.orElseThrow(()-> new UsernameNotFoundException("The user wasn't found: " + name));
@@ -95,8 +100,26 @@ public class ImageService {
     imageDTO.setUploadedAt(image.getUploadedAt());
     imageDTO.setContentType(image.getContentType());
     imageDTO.setSha256Hex(image.getSha256Hex());
-
     return imageDTO;
+    }
+
+    public byte[] getCurrentUserImage(Long id) throws IOException {
+
+Optional<Image> optional = imageRepository.findFirstByCustomerIdOrderByUploadedAtDesc(id);
+Image image = optional.orElseThrow(() -> new RuntimeException("Profile Image not found"));
+
+Path path = Paths.get(uploadDir+ "/"+ image.getStorageKey());
+        System.out.println("am i in here???");
+
+return Files.readAllBytes(path);
+    }
+
+    public String getCustomerImageType(Long customerId)  {
+        Optional<Image> optional = imageRepository.findFirstByCustomerIdOrderByUploadedAtDesc(customerId);
+        Image image = optional.orElseThrow(() -> new RuntimeException("Profile Image not found"));
+        System.out.println("am i in here???");
+
+        return image.getContentType();
     }
 
 }

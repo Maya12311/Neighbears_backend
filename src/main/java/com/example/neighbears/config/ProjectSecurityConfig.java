@@ -82,7 +82,7 @@ public class ProjectSecurityConfig {
                                 .requestMatchers(HttpMethod.PUT, "/profile").authenticated()
                                 .requestMatchers(HttpMethod.POST, "/uploadImage").authenticated()
 
-                                .requestMatchers( "/profile", "/user", "/uploadImage").authenticated()
+                                .requestMatchers( "/profile", "/user", "/uploadImage", "/getprofilePic").authenticated()
                 .requestMatchers( "/error", "/login","/test", "/register", "/invalidSession").permitAll())
                 .formLogin(Customizer.withDefaults());
                         //flc -> flc.loginPage("/login").defaultSuccessUrl("/profile").failureUrl("login?error=true")); part of 64 Form Login but not with Angular

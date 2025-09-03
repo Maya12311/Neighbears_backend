@@ -1,7 +1,6 @@
 package com.example.neighbears.dto;
 import com.example.neighbears.model.Authority;
 import com.example.neighbears.model.Image;
-import com.example.neighbears.model.SelfDescription;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.Email;
@@ -28,6 +27,8 @@ public class CustomerDTO {
 
     private Image avatar;
 
+    private AddressDTO addressDTO;
+
     public CustomerDTO() {
     }
 
@@ -51,6 +52,8 @@ public class CustomerDTO {
         this.authorities = authorities;
     }
 
+
+
     public CustomerDTO(long id, String name, String email, long mobileNumber, String pwd, String role, SelfDescriptionDTO selfDescriptionDTO, Set<Authority> authorities, Image avatar) {
         this.id = id;
         this.name = name;
@@ -66,6 +69,8 @@ public class CustomerDTO {
     public Image getAvatar() {
         return avatar;
     }
+
+
 
     public void setAvatar(Image avatar) {
         this.avatar = avatar;
@@ -85,6 +90,14 @@ public class CustomerDTO {
 
     public void setSelfDescriptionDTO(SelfDescriptionDTO selfDescriptionDTO) {
         this.selfDescriptionDTO = selfDescriptionDTO;
+    }
+
+    public AddressDTO getAddressDTO() {
+        return addressDTO;
+    }
+
+    public void setAddressDTO(AddressDTO addressDTO) {
+        this.addressDTO = addressDTO;
     }
 
     public long getId() {
