@@ -19,7 +19,7 @@ public class Customer {
     private String pwd;
     private String role;
 
-    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private SelfDescription description;
 
     @OneToMany(mappedBy = "customer", fetch= FetchType.EAGER)
@@ -29,6 +29,9 @@ public class Customer {
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Image avatar;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="address_id")
+    private Address address;
     public Customer() {
         super();
     }
@@ -49,6 +52,17 @@ public class Customer {
         this.avatar = avatar;
     }
 
+    public Customer(long id, String name, String email, Long mobileNumber, String pwd, String role, SelfDescription description, Address address) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.mobileNumber = mobileNumber;
+        this.pwd = pwd;
+        this.role = role;
+        this.description = description;
+        this.address = address;
+    }
+
     public Customer(long id, String name, String email, Long mobileNumber, String pwd, String role, SelfDescription description, Set<Authority> authorities) {
         this.id = id;
         this.name = name;
@@ -58,6 +72,15 @@ public class Customer {
         this.role = role;
         this.description = description;
         this.authorities = authorities;
+    }
+
+    public Customer(long id, String name, String email, Long mobileNumber, String pwd, String role) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.mobileNumber = mobileNumber;
+        this.pwd = pwd;
+        this.role = role;
     }
 
     public Image getAvatar() {
@@ -128,6 +151,14 @@ public class Customer {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     @Override

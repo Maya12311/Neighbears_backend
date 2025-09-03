@@ -3,6 +3,7 @@ package com.example.neighbears.controller;
 import ch.qos.logback.core.CoreConstants;
 import com.example.neighbears.config.EazyBankUsernamePwdAuthenticationProvider;
 import com.example.neighbears.dto.CustomerDTO;
+import com.example.neighbears.dto.RegistrationUserAddressDTO;
 import com.example.neighbears.model.Customer;
 import com.example.neighbears.repository.CustomerRepository;
 import com.example.neighbears.service.NeighbearsUserDetailsService;
@@ -46,10 +47,15 @@ private final EazyBankUsernamePwdAuthenticationProvider eazyBankUsernamePwdAuthe
 
 
     @PostMapping("/register")
-    public ResponseEntity <Map<String, String>> registerUser(@RequestBody CustomerDTO customerDTO){
+    public ResponseEntity <Map<String, String>> registerUser(@RequestBody RegistrationUserAddressDTO registrationUserAddressDTO){
         try{
+            System.out.println("hallelulja");
+            System.out.println(registrationUserAddressDTO.getCustomerDTO());
 
-        Long customerId = userDetailsService.registerUser(customerDTO);
+            System.out.println(registrationUserAddressDTO.getCustomerDTO().getEmail());
+            System.out.println(registrationUserAddressDTO.getAddressDTO());
+
+            Long customerId = userDetailsService.registerUser(registrationUserAddressDTO);
             if(customerId > 0) {
                 String successMessage = environment.getProperty("API.INSERT_SUCCESS") + customerId;
                 Map<String, String> response = new HashMap<>();
