@@ -3,7 +3,7 @@ package com.example.neighbears.service;
 import com.example.neighbears.dto.AddressDTO;
 import com.example.neighbears.dto.CustomerDTO;
 import com.example.neighbears.dto.RegistrationUserAddressDTO;
-import com.example.neighbears.exceptions.EmailAlreadyUsedException;
+import com.example.neighbears.exceptions.NeighbearsException;
 import com.example.neighbears.model.Address;
 import com.example.neighbears.model.Customer;
 import com.example.neighbears.repository.AddressRepository;
@@ -65,12 +65,12 @@ public class NeighbearsUserDetailsService implements UserDetailsService {
     }
 
     @Transactional
-    public Long registerUser(RegistrationUserAddressDTO registrationUserAddressDTO) throws EmailAlreadyUsedException {
+    public Long registerUser(RegistrationUserAddressDTO registrationUserAddressDTO) throws NeighbearsException {
         CustomerDTO customerDTO = registrationUserAddressDTO.getCustomerDTO();
         AddressDTO addressDTO = registrationUserAddressDTO.getAddressDTO();
 
         if(customerRepository.findByEmail(customerDTO.getEmail()).isPresent()){
-            throw new EmailAlreadyUsedException(customerDTO.getEmail() + "is already existing");
+            throw new NeighbearsException(customerDTO.getEmail() + "is already existing");
         };
 
         Customer customer = new Customer();
