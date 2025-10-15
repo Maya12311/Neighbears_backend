@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -55,13 +56,18 @@ public class NeighbearsUserDetailsService implements UserDetailsService {
 
 
     public CustomerDTO getUserByEmail(String email) throws UsernameNotFoundException {
-        System.out.println("was ist das funcking problem");
         Optional<Customer> optional = customerRepository.findByEmail(email);
         Customer customer = optional.orElseThrow(() -> new UsernameNotFoundException("user not found"));
         CustomerDTO customerDTO = new CustomerDTO
                 (customer.getId(), customer.getName(), customer.getEmail(), customer.getMobileNumber(), customer.getPwd(), customer.getRole());
 
         return customerDTO;
+    }
+
+    public List<CustomerDTO> getAllNeighbears( ){
+System.out.println("BLuuuuuu");
+       List<CustomerDTO> neighbearsList = new ArrayList<>();
+        return neighbearsList;
     }
 
     @Transactional

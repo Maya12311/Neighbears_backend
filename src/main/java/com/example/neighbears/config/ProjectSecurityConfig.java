@@ -85,14 +85,14 @@ public class ProjectSecurityConfig {
                                 .requestMatchers(HttpMethod.PUT, "/profile").authenticated()
                                 .requestMatchers(HttpMethod.POST, "/uploadImage", "/logout").authenticated()
 
-                                .requestMatchers( "/profile", "/user", "/uploadImage", "/getprofilePic", "logout").authenticated()
+                                .requestMatchers( "/profile","/allNeighbears", "/user", "/uploadImage", "/getprofilePic", "logout").authenticated()
                 .requestMatchers( "/error", "/login","/test", "/register", "/invalidSession", "/logout").permitAll())
                 .formLogin(Customizer.withDefaults())
                         .logout(logout -> logout
-                                .logoutUrl("/logout")                                  // 🔴 Endpoint
-                                .deleteCookies("JSESSIONID", "SESSION", "XSRF-TOKEN")      // 🔴 Browser löscht Cookies
-                                .invalidateHttpSession(true)                               // 🔴 Server-Session killen
-                                .clearAuthentication(true)                                 // 🔴 Auth leeren
+                                .logoutUrl("/logout")                                  //  Endpoint
+                                .deleteCookies("JSESSIONID", "SESSION", "XSRF-TOKEN")      //  Browser löscht Cookies
+                                .invalidateHttpSession(true)                               //  Server-Session killen
+                                .clearAuthentication(true)                                 //  Auth leeren
                                 .logoutSuccessHandler((req, res, auth) -> {                // 🔴 204 → keine Redirects
                                     res.setStatus(jakarta.servlet.http.HttpServletResponse.SC_NO_CONTENT);
                                 })
