@@ -32,6 +32,10 @@ public class SelfDescriptionDTO {
 
 
 
+    public SelfDescriptionDTO(String title, String message) {
+        this.title = title;
+        this.message = message;
+    }
 
     public void setCustomerId(Long customerId) {
         this.customerId = customerId;

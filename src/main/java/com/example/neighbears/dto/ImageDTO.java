@@ -33,6 +33,10 @@ public class ImageDTO {
         this.uploadedAt = uploadedAt;
     }
 
+    public ImageDTO(String storageKey) {
+        this.storageKey = storageKey;
+    }
+
     public String getFilename() {
         return filename;
     }

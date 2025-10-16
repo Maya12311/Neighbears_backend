@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class SelfDescription {
 
     @Id
-    @Column(name="customer_id")
+    @Column(name = "customer_id")
     private Long customerId;
 
     private String title;
@@ -24,7 +24,7 @@ public class SelfDescription {
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(name="updated_at")
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @OneToOne
@@ -49,8 +49,15 @@ public class SelfDescription {
         this.updatedAt = updatedAt;
     }
 
+
+    public SelfDescription(String message, String title) {
+        this.message = message;
+        this.title = title;
+    }
+
     public SelfDescription() {
     }
+
 
     @PreUpdate
     public void onUpdate() {
@@ -68,7 +75,6 @@ public class SelfDescription {
     public Long getCustomerId() {
         return customerId;
     }
-
 
 
     public String getTitle() {
@@ -92,10 +98,7 @@ public class SelfDescription {
     }
 
 
-
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
-
-
 }

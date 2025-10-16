@@ -49,6 +49,12 @@ public class Image {
         this.uploadedAt = uploadedAt;
     }
 
+
+
+    public Image(String storageKey) {
+        this.storageKey = storageKey;
+    }
+
     public Customer getCustomer() {
         return customer;
     }
