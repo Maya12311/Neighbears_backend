@@ -1,8 +1,6 @@
 package com.example.neighbears.service;
 
-import com.example.neighbears.dto.AddressDTO;
-import com.example.neighbears.dto.CustomerDTO;
-import com.example.neighbears.dto.RegistrationUserAddressDTO;
+import com.example.neighbears.dto.*;
 import com.example.neighbears.exceptions.NeighbearsException;
 import com.example.neighbears.model.Address;
 import com.example.neighbears.model.Customer;
@@ -59,15 +57,57 @@ public class NeighbearsUserDetailsService implements UserDetailsService {
         Optional<Customer> optional = customerRepository.findByEmail(email);
         Customer customer = optional.orElseThrow(() -> new UsernameNotFoundException("user not found"));
         CustomerDTO customerDTO = new CustomerDTO
-                (customer.getId(), customer.getName(), customer.getEmail(), customer.getMobileNumber(), customer.getPwd(), customer.getRole());
+                (customer.getId(), customer.getName(), customer.getEmail(),
+                        customer.getMobileNumber(), customer.getPwd(), customer.getRole());
 
         return customerDTO;
     }
 
-    public List<CustomerDTO> getAllNeighbears( ){
+    public List<CustomerDTO> getAllNeighbears( String email){
 System.out.println("BLuuuuuu");
-       List<CustomerDTO> neighbearsList = new ArrayList<>();
-        return neighbearsList;
+       List<Customer> neighbearsList = new ArrayList<>();
+ Optional<Customer> optional = customerRepository.findByEmail(email);
+    Customer customer = optional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    Address address = new Address(
+            customer.getAddress().getId(),
+            customer.getAddress().getStreet(),
+            customer.getAddress().getHouseNumber(),
+            customer.getAddress().getZipCode(),
+            customer.getAddress().getCity());
+
+
+    List<Customer> allNeighbearsList = customerRepository.findByAddressId(customer.getAddress().getId());
+        if(allNeighbearsList.isEmpty()) throw new NeighbearsException("The NeighbearsList is empty");
+    List<CustomerDTO> dtoNeighbearsList = new ArrayList<>();
+
+    for(Customer one: allNeighbearsList){
+
+        CustomerDTO cDto = new CustomerDTO(
+        one.getName(),
+                new SelfDescriptionDTO(
+                        one.getDescription().getMessage(),
+                        one.getDescription().getTitle()
+                ),
+                new ImageDTO(
+                        one.getAvatar().getStorageKey()
+                ),
+        new AddressDTO(
+                one.getAddress().getId(),
+                one.getAddress().getStreet(),
+                one.getAddress().getHouseNumber(),
+                one.getAddress().getZipCode(),
+                one.getAddress().getCity()
+                ));
+
+
+                dtoNeighbearsList.add(cDto);
+
+
+    };
+
+    //allNeighbearsList.stream().map(CustomerDTO::new).collect(Collectors.toList());
+
+        return dtoNeighbearsList;
     }
 
     @Transactional

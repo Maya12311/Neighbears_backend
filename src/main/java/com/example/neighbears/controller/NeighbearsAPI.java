@@ -22,7 +22,8 @@ public class NeighbearsAPI {
     public ResponseEntity<List<CustomerDTO>> getAllNeighbears (Authentication authentication) {
     System.out.println(authentication);
         List<CustomerDTO> neighbearsList = new ArrayList<>();
-        neighbearsList = neighbearsUserDetailsService.getAllNeighbears();
+        String email = authentication.getName();
+        neighbearsList = neighbearsUserDetailsService.getAllNeighbears( email);
         return ResponseEntity.ok(neighbearsList);
     }
 }

@@ -5,6 +5,7 @@ import com.example.neighbears.model.SelfDescription;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -12,5 +13,5 @@ public interface CustomerRepository extends CrudRepository< Customer, Long> {
 
 Optional<Customer> findByEmail(String email);
 //Optional<SelfDescription> findBySelfDescription(String email);
-
+List<Customer> findByAddressId(Long id);
 }

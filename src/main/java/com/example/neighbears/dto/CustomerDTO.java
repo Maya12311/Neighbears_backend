@@ -1,5 +1,6 @@
 package com.example.neighbears.dto;
 import com.example.neighbears.model.Authority;
+import com.example.neighbears.model.Customer;
 import com.example.neighbears.model.Image;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -41,6 +42,10 @@ public class CustomerDTO {
         this.role = role;
     }
 
+
+
+
+
     public CustomerDTO(long id, String name, String email, long mobileNumber, String pwd, String role, SelfDescriptionDTO selfDescriptionDTO, Set<Authority> authorities) {
         this.id = id;
         this.name = name;
@@ -65,6 +70,36 @@ public class CustomerDTO {
         this.authorities = authorities;
         this.avatar = avatar;
     }
+
+
+
+    public CustomerDTO(String name, String email, long mobileNumber, String pwd, String role, SelfDescriptionDTO selfDescriptionDTO, Set<Authority> authorities, Image avatar, AddressDTO addressDTO) {
+        this.name = name;
+        this.email = email;
+        this.mobileNumber = mobileNumber;
+        this.pwd = pwd;
+        this.role = role;
+        this.selfDescriptionDTO = selfDescriptionDTO;
+        this.authorities = authorities;
+        this.avatar = avatar;
+        this.addressDTO = addressDTO;
+    }
+
+    public CustomerDTO(String name,SelfDescriptionDTO selfDescriptionDTO, Image avatar, AddressDTO addressDTO) {
+        this.name = name;
+        this.selfDescriptionDTO = selfDescriptionDTO;
+        this.avatar = avatar;
+        this.addressDTO = addressDTO;
+    }
+
+
+    public CustomerDTO(AddressDTO addressDTO) {
+        this.addressDTO = addressDTO;
+    }
+
+    public CustomerDTO(String name, SelfDescriptionDTO selfDescriptionDTO, ImageDTO imageDTO, AddressDTO addressDTO) {
+    }
+
 
     public Image getAvatar() {
         return avatar;

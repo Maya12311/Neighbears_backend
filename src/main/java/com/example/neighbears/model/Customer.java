@@ -83,6 +83,20 @@ public class Customer {
         this.role = role;
     }
 
+
+
+    public Customer(String name, String email, Long mobileNumber, String pwd, String role, SelfDescription description, Set<Authority> authorities, Image avatar, Address address) {
+        this.name = name;
+        this.email = email;
+        this.mobileNumber = mobileNumber;
+        this.pwd = pwd;
+        this.role = role;
+        this.description = description;
+        this.authorities = authorities;
+        this.avatar = avatar;
+        this.address = address;
+    }
+
     public Image getAvatar() {
         return avatar;
     }
