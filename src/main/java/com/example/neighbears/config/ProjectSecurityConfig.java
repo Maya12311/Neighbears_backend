@@ -85,7 +85,7 @@ public class ProjectSecurityConfig {
                                 .requestMatchers(HttpMethod.PUT, "/profile").authenticated()
                                 .requestMatchers(HttpMethod.POST, "/uploadImage", "/logout").authenticated()
 
-                                .requestMatchers( "/profile","/allNeighbears", "/user", "/uploadImage", "/getprofilePic", "logout").authenticated()
+                                .requestMatchers( "/profile","/allNeighbears", "/user", "/uploadImage", "/getprofilePic", "/logout").authenticated()
                 .requestMatchers( "/error", "/login","/test", "/register", "/invalidSession", "/logout").permitAll())
                 .formLogin(Customizer.withDefaults())
                         .logout(logout -> logout

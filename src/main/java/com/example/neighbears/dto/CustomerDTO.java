@@ -26,7 +26,7 @@ public class CustomerDTO {
 
     private Set<Authority> authorities;
 
-    private Image avatar;
+    private ImageDTO avatar;
 
     private AddressDTO addressDTO;
 
@@ -59,7 +59,7 @@ public class CustomerDTO {
 
 
 
-    public CustomerDTO(long id, String name, String email, long mobileNumber, String pwd, String role, SelfDescriptionDTO selfDescriptionDTO, Set<Authority> authorities, Image avatar) {
+    public CustomerDTO(long id, String name, String email, long mobileNumber, String pwd, String role, SelfDescriptionDTO selfDescriptionDTO, Set<Authority> authorities, ImageDTO avatar) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -73,7 +73,7 @@ public class CustomerDTO {
 
 
 
-    public CustomerDTO(String name, String email, long mobileNumber, String pwd, String role, SelfDescriptionDTO selfDescriptionDTO, Set<Authority> authorities, Image avatar, AddressDTO addressDTO) {
+    public CustomerDTO(String name, String email, long mobileNumber, String pwd, String role, SelfDescriptionDTO selfDescriptionDTO, Set<Authority> authorities, ImageDTO avatar, AddressDTO addressDTO) {
         this.name = name;
         this.email = email;
         this.mobileNumber = mobileNumber;
@@ -85,29 +85,29 @@ public class CustomerDTO {
         this.addressDTO = addressDTO;
     }
 
-    public CustomerDTO(String name,SelfDescriptionDTO selfDescriptionDTO, Image avatar, AddressDTO addressDTO) {
+
+
+    public CustomerDTO(String name,  SelfDescriptionDTO selfDescriptionDTO, ImageDTO avatar, AddressDTO addressDTO) {
         this.name = name;
         this.selfDescriptionDTO = selfDescriptionDTO;
         this.avatar = avatar;
         this.addressDTO = addressDTO;
     }
 
-
     public CustomerDTO(AddressDTO addressDTO) {
         this.addressDTO = addressDTO;
     }
 
-    public CustomerDTO(String name, SelfDescriptionDTO selfDescriptionDTO, ImageDTO imageDTO, AddressDTO addressDTO) {
-    }
 
 
-    public Image getAvatar() {
+
+    public ImageDTO getAvatar() {
         return avatar;
     }
 
 
 
-    public void setAvatar(Image avatar) {
+    public void setAvatar(ImageDTO avatar) {
         this.avatar = avatar;
     }
 

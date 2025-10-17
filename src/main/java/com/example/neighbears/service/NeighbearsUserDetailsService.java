@@ -4,6 +4,7 @@ import com.example.neighbears.dto.*;
 import com.example.neighbears.exceptions.NeighbearsException;
 import com.example.neighbears.model.Address;
 import com.example.neighbears.model.Customer;
+import com.example.neighbears.model.SelfDescription;
 import com.example.neighbears.repository.AddressRepository;
 import com.example.neighbears.repository.CustomerRepository;
 import org.springframework.core.env.Environment;
@@ -64,39 +65,75 @@ public class NeighbearsUserDetailsService implements UserDetailsService {
     }
 
     public List<CustomerDTO> getAllNeighbears( String email){
-System.out.println("BLuuuuuu");
        List<Customer> neighbearsList = new ArrayList<>();
+
  Optional<Customer> optional = customerRepository.findByEmail(email);
     Customer customer = optional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
-    Address address = new Address(
-            customer.getAddress().getId(),
-            customer.getAddress().getStreet(),
-            customer.getAddress().getHouseNumber(),
-            customer.getAddress().getZipCode(),
-            customer.getAddress().getCity());
 
+        String message = null;
+        String title = null;
+        String storageKey = null;
 
-    List<Customer> allNeighbearsList = customerRepository.findByAddressId(customer.getAddress().getId());
+        Long Id = customer.getAddress().getId() != null ? customer.getAddress().getId() : 0;
+
+        List<Customer> allNeighbearsList = customerRepository.findByAddressIdWithDetails(Id);
         if(allNeighbearsList.isEmpty()) throw new NeighbearsException("The NeighbearsList is empty");
     List<CustomerDTO> dtoNeighbearsList = new ArrayList<>();
 
     for(Customer one: allNeighbearsList){
+        SelfDescription desc = one.getDescription();
+        String descriptionMessage = (desc != null && desc.getMessage() != null)
+                ? desc.getMessage()
+                : "<no-desc>";
+
+        String descriptionTitle = (desc != null && desc.getTitle() != null)
+                ? desc.getTitle()
+                : "<no-title>";
+
+
+        if (one.getAvatar() != null) {
+            storageKey = one.getAvatar().getStorageKey();
+        }else{
+            storageKey = "";
+        }
+
+        Address address = one.getAddress();
+
+        Long addressId = (address != null && address.getId() != null)
+                ? address.getId()
+                : 0L;
+
+        String addressStreet = (address != null && address.getStreet() != null)
+                ? address.getStreet()
+                : "<no-street>";
+
+        String addressHouseNumber = (address != null && address.getHouseNumber() != null)
+                ? address.getHouseNumber()
+                : "";
+
+        String addressZipCode = (address != null && address.getZipCode() != null)
+                ? address.getZipCode()
+                : "";
+
+        String addressCity = (address != null && address.getCity() != null)
+                ? address.getCity()
+                : "";
 
         CustomerDTO cDto = new CustomerDTO(
         one.getName(),
                 new SelfDescriptionDTO(
-                        one.getDescription().getMessage(),
-                        one.getDescription().getTitle()
+                       descriptionMessage,
+                        descriptionTitle
                 ),
                 new ImageDTO(
-                        one.getAvatar().getStorageKey()
+                       storageKey
                 ),
         new AddressDTO(
-                one.getAddress().getId(),
-                one.getAddress().getStreet(),
-                one.getAddress().getHouseNumber(),
-                one.getAddress().getZipCode(),
-                one.getAddress().getCity()
+                addressId,
+               addressStreet,
+               addressHouseNumber,
+                addressZipCode,
+                addressCity
                 ));
 
 
@@ -106,7 +143,10 @@ System.out.println("BLuuuuuu");
     };
 
     //allNeighbearsList.stream().map(CustomerDTO::new).collect(Collectors.toList());
+for(CustomerDTO blu: dtoNeighbearsList){
+    System.out.println("last test in the backend "+ blu.getAddressDTO().getStreet()+ blu.getName()+ blu.getAddressDTO().getCity());
 
+}
         return dtoNeighbearsList;
     }
 

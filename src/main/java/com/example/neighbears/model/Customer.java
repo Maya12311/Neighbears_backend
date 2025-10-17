@@ -22,7 +22,7 @@ public class Customer {
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private SelfDescription description;
 
-    @OneToMany(mappedBy = "customer", fetch= FetchType.EAGER)
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
     @JsonIgnore //if UI is giving error message
     private Set<Authority> authorities;
 
@@ -30,8 +30,9 @@ public class Customer {
     private Image avatar;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="address_id")
+    @JoinColumn(name = "address_id")
     private Address address;
+
     public Customer() {
         super();
     }
@@ -84,7 +85,6 @@ public class Customer {
     }
 
 
-
     public Customer(String name, String email, Long mobileNumber, String pwd, String role, SelfDescription description, Set<Authority> authorities, Image avatar, Address address) {
         this.name = name;
         this.email = email;
@@ -96,6 +96,7 @@ public class Customer {
         this.avatar = avatar;
         this.address = address;
     }
+
 
     public Image getAvatar() {
         return avatar;
@@ -124,7 +125,6 @@ public class Customer {
     public long getId() {
         return id;
     }
-
 
 
     public String getEmail() {
