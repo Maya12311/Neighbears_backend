@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,11 +33,13 @@ public class NeighbearsUserDetailsService implements UserDetailsService {
     private final Environment environment;
     private final AddressRepository addressRepository;
 
-    public NeighbearsUserDetailsService(PasswordEncoder passwordEncoder, AddressRepository addressRepository, CustomerRepository customerRepository, Environment environment) {
+    public NeighbearsUserDetailsService(PasswordEncoder passwordEncoder, AddressRepository addressRepository,
+                                        CustomerRepository customerRepository, Environment environment) {
         this.passwordEncoder = passwordEncoder;
         this.customerRepository = customerRepository;
         this.environment = environment;
         this.addressRepository = addressRepository;
+
     }
 
 
@@ -64,7 +67,7 @@ public class NeighbearsUserDetailsService implements UserDetailsService {
         return customerDTO;
     }
 
-    public List<CustomerDTO> getAllNeighbears( String email){
+    public List<CustomerDTO> getAllNeighbears( String email)  {
        List<Customer> neighbearsList = new ArrayList<>();
 
  Optional<Customer> optional = customerRepository.findByEmail(email);
@@ -73,6 +76,8 @@ public class NeighbearsUserDetailsService implements UserDetailsService {
         String message = null;
         String title = null;
         String storageKey = null;
+        String contentType = null;
+        byte[] avatar = new byte[0];
 
         Long Id = customer.getAddress().getId() != null ? customer.getAddress().getId() : 0;
 
@@ -93,8 +98,11 @@ public class NeighbearsUserDetailsService implements UserDetailsService {
 
         if (one.getAvatar() != null) {
             storageKey = one.getAvatar().getStorageKey();
+            contentType = one.getAvatar().getContentType();
+            
         }else{
             storageKey = "";
+            contentType = "";
         }
 
         Address address = one.getAddress();
@@ -119,14 +127,20 @@ public class NeighbearsUserDetailsService implements UserDetailsService {
                 ? address.getCity()
                 : "";
 
+
+
         CustomerDTO cDto = new CustomerDTO(
+                one.getId(),
         one.getName(),
                 new SelfDescriptionDTO(
                        descriptionMessage,
                         descriptionTitle
                 ),
                 new ImageDTO(
-                       storageKey
+                contentType,
+                        storageKey,
+                        avatar
+
                 ),
         new AddressDTO(
                 addressId,

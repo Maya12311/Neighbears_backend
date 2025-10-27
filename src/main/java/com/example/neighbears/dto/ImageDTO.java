@@ -19,6 +19,8 @@ public class ImageDTO {
     @NotNull
     private Instant uploadedAt;
 
+    private byte[] avatar;
+
     public ImageDTO() {
     }
 
@@ -35,6 +37,29 @@ public class ImageDTO {
 
     public ImageDTO(String storageKey) {
         this.storageKey = storageKey;
+    }
+
+    public ImageDTO(String contentType, String storageKey) {
+    this.contentType = contentType;
+    this.storageKey = storageKey;
+    }
+
+
+
+    public ImageDTO(String contentType,  String storageKey, byte[] avatar) {
+        this.contentType = contentType;
+
+        this.storageKey = storageKey;
+
+        this.avatar = avatar;
+    }
+
+    public byte[] getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(byte[] avatar) {
+        this.avatar = avatar;
     }
 
     public String getFilename() {
