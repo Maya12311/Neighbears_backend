@@ -46,4 +46,27 @@ log.info("need " + type);
                 .contentType(MediaType.parseMediaType(type))
                 .body(image);
     }
+
+    @GetMapping(value="/getprofilePicWithId")
+    public ResponseEntity<byte[]> getCurrentUserImageWithId(Authentication authentication) throws IOException {
+        String email = authentication.getName();
+        CustomerDTO customerDTO = neighbearsUserDetailsService.getUserByEmail(email);
+        byte[] image = imageService.getCurrentUserImage(customerDTO.getId());
+        String type = imageService.getCustomerImageType(customerDTO.getId());
+        log.info("what ist "+image);
+        log.info("need " + type);
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(type))
+                .body(image);
+    }
+
+    @GetMapping("/api/users/{id}/avatar")
+    public ResponseEntity<byte[]> getAvatar(@PathVariable Long id) throws IOException {
+        byte[] image = imageService.getCurrentUserImage(id);
+        String type = imageService.getCustomerImageType(id);
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(type))
+                .body(image);
+    }
+
 }

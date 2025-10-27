@@ -98,7 +98,14 @@ public class CustomerDTO {
         this.addressDTO = addressDTO;
     }
 
+    public CustomerDTO(long id, String name, SelfDescriptionDTO selfDescriptionDTO, ImageDTO imageDTO, AddressDTO addressDTO) {
+    this.id = id;
+    this.name = name;
+    this.selfDescriptionDTO = selfDescriptionDTO;
+    this.avatar = imageDTO;
+    this.addressDTO = addressDTO; 
 
+    }
 
 
     public ImageDTO getAvatar() {
